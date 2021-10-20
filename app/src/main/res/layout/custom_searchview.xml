@@ -17,6 +17,7 @@
         android:layout_height="52dp"
         android:layout_marginTop="@dimen/margin_padding_size_medium"
         android:padding="@dimen/margin_padding_size_small"
+        android:elevation="2dp"
         android:background="@drawable/selector_search_textfield"
         android:hint="Search news"/>
 

@@ -1,9 +1,8 @@
-package com.revelatestudio.revelate.model.dataholder
+package com.revelatestudio.revelate.util
 
-import com.revelatestudio.revelate.util.*
+import com.revelatestudio.revelate.model.dataholder.NewsCategory
 
 object Category {
-
     val newsCategories = arrayListOf(
         NewsCategory("Business", BUSINESS),
         NewsCategory("Entertainment", ENTERTAINMENT),

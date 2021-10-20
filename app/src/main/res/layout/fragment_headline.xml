@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/custom_toolbar_app" />
+        layout="@layout/toolbar_app_logo" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"

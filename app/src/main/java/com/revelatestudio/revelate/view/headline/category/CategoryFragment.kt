@@ -1,4 +1,4 @@
-package com.revelatestudio.revelate.view.headline.category.adapter
+package com.revelatestudio.revelate.view.headline.category
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.revelatestudio.revelate.R
 import com.revelatestudio.revelate.databinding.FragmentCategoryBinding
+import com.revelatestudio.revelate.util.*
 
 
 private const val NEWS_CATEGORY = "news_category"
@@ -36,7 +37,26 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        when(newsCategory) {
+            BUSINESS -> {
 
+            }
+            TECHNOLOGY -> {
+
+            }
+            ENTERTAINMENT -> {
+
+            }
+            GENERAL -> {
+
+            }
+            HEALTH -> {
+
+            }
+            SCIENCE -> {
+
+            }
+        }
     }
 
     override fun onDestroyView() {
