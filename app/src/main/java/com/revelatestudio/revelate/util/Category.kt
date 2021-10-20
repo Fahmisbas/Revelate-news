@@ -1,6 +1,6 @@
 package com.revelatestudio.revelate.util
 
-import com.revelatestudio.revelate.model.dataholder.NewsCategory
+import com.revelatestudio.revelate.data.dataholder.NewsCategory
 
 object Category {
     val newsCategories = arrayListOf(
@@ -9,7 +9,7 @@ object Category {
         NewsCategory("General", GENERAL),
         NewsCategory("Health", HEALTH),
         NewsCategory("Science", SCIENCE),
+        NewsCategory("Sports", SPORTS),
         NewsCategory("Technology", TECHNOLOGY)
     )
-
 }

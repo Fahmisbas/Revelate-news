@@ -1,8 +1,8 @@
-package com.revelatestudio.revelate.model.source
+package com.revelatestudio.revelate.data.source
 
 import com.google.gson.annotations.SerializedName
 
-data class ArticleResponse(
+data class NewsReponse(
 
 	@field:SerializedName("totalResults")
 	val totalResults: Int? = null,

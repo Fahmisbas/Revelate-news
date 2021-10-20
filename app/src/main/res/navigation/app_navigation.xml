@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_headline" />
     <fragment
         android:id="@+id/bookmarkFragment"
-        android:name="com.revelatestudio.revelate.view.bookmark.BookmarkFragment"
+        android:name="com.revelatestudio.revelate.view.bookmark.SavedArticleFragment"
         android:label="fragment_bookmark"
-        tools:layout="@layout/fragment_bookmark" />
+        tools:layout="@layout/fragment_saved_article" />
 </navigation>

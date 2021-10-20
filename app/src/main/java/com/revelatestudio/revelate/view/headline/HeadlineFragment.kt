@@ -9,8 +9,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.revelatestudio.revelate.databinding.FragmentHeadlineBinding
 import com.revelatestudio.revelate.util.Category
 import com.revelatestudio.revelate.view.headline.category.adapter.ViewPagerAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class HeadlineFragment : Fragment() {
 
     private var _binding: FragmentHeadlineBinding? = null

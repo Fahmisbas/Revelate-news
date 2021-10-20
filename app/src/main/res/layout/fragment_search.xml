@@ -16,24 +16,57 @@
             layout="@layout/custom_searchview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_large"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <include layout="@layout/shimmer_category"
+        <include
+            layout="@layout/shimmer_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/search"/>
+            app:layout_constraintTop_toBottomOf="@id/rv_search_history" />
+
+        <TextView
+            android:id="@+id/title_search_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            android:text="Search History"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/search" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:textColor="@color/primaryColor"
+            android:layout_marginEnd="@dimen/margin_padding_size_small"
+            app:layout_constraintBottom_toTopOf="@+id/rv_search_history"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            app:layout_constraintTop_toBottomOf="@id/title_search_history" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/search"
+            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            app:layout_constraintTop_toBottomOf="@id/rv_search_history"
             tools:listitem="@layout/item_news"
             tools:visibility="gone" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

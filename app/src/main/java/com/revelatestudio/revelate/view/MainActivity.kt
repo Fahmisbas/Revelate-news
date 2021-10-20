@@ -6,7 +6,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.revelatestudio.revelate.R
 import com.revelatestudio.revelate.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var _binding : ActivityMainBinding? = null

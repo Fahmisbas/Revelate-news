@@ -15,11 +15,11 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding_size_medium"
-        android:backgroundTint="@color/semiGray"
+        android:backgroundTint="@color/white"
         android:paddingStart="@dimen/margin_padding_size_medium"
-        app:tabMode="scrollable"
+        android:paddingTop="@dimen/margin_padding_size_medium"
         app:tabGravity="start"
+        app:tabMode="scrollable"
         app:tabTextAppearance="@style/TextAppearance.AppCompat.Small" />
 
     <androidx.viewpager2.widget.ViewPager2

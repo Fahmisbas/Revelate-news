@@ -1,6 +1,5 @@
 package com.revelatestudio.revelate.util
 
-
 const val BUSINESS = 0
 const val ENTERTAINMENT = 1
 const val GENERAL = 2

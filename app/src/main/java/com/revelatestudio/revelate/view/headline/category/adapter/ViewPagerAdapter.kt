@@ -8,6 +8,7 @@ import com.revelatestudio.revelate.util.Category
 import com.revelatestudio.revelate.view.headline.category.CategoryFragment
 
 
+
 class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
@@ -16,6 +17,6 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     }
 
     override fun createFragment(categoryPosition: Int): Fragment {
-        return CategoryFragment.newInstance(Category.newsCategories[categoryPosition].position)
+        return CategoryFragment.newInstance(Category.newsCategories[categoryPosition])
     }
 }
