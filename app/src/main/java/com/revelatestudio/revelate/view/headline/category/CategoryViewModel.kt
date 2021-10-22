@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.revelatestudio.revelate.data.repository.Repository
-import com.revelatestudio.revelate.data.source.NewsReponse
+import com.revelatestudio.revelate.data.source.remote.NewsResponse
 import com.revelatestudio.revelate.util.DispatcherProvider
 import androidx.lifecycle.viewModelScope
 import com.revelatestudio.revelate.util.Resource
@@ -19,36 +19,43 @@ class CategoryViewModel @Inject constructor(
 ) : ViewModel(){
 
 
-    private val _headlinesWithCategory = MutableLiveData<Resource<NewsReponse>>(Resource.Empty())
-    val headlinesWithCategory : LiveData<Resource<NewsReponse>> = _headlinesWithCategory
-
     fun setDefaultCountryCode(countryCode : String) {
         repository.setDefaultCountryCode(countryCode)
     }
 
-    fun getTopHeadlinesByCountryWithCategory(category : String) {
+    fun getTopHeadlinesByCountryWithCategory(category : String) : LiveData<Resource<NewsResponse>> {
+        val mutableHeadlinesByCountryWithCategory = MutableLiveData<Resource<NewsResponse>>(Resource.Empty())
+        val headlinesByCountryWithCategory : LiveData<Resource<NewsResponse>> = mutableHeadlinesByCountryWithCategory
         viewModelScope.launch(dispatcher.io) {
             when(val response =  repository.getTopHeadlinesWithCategory(category)) {
                 is Resource.Error -> {
-                    _headlinesWithCategory.postValue(Resource.Error("Unexpected Error"))
+                    mutableHeadlinesByCountryWithCategory.postValue(Resource.Error("Unexpected Error"))
                 }
                 is Resource.Success -> {
-                    _headlinesWithCategory.postValue(response)
+                    mutableHeadlinesByCountryWithCategory.postValue(response)
                 }
             }
         }
+        return headlinesByCountryWithCategory
     }
 
-    fun getTopHeadlinesByCountry() {
+    fun getTopHeadlinesByCountry(): LiveData<Resource<NewsResponse>> {
+        val mutableHeadlinesWithCategory = MutableLiveData<Resource<NewsResponse>>(Resource.Empty())
+        val headlinesWithCategory : LiveData<Resource<NewsResponse>> = mutableHeadlinesWithCategory
         viewModelScope.launch(dispatcher.io) {
             when(val response =  repository.getTopHeadlinesByCountry()) {
                 is Resource.Error -> {
-                    _headlinesWithCategory.postValue(Resource.Error("Unexpected Error"))
+                    mutableHeadlinesWithCategory.postValue(Resource.Error("Unexpected Error"))
                 }
                 is Resource.Success -> {
-                    _headlinesWithCategory.postValue(response)
+                    mutableHeadlinesWithCategory.postValue(response)
                 }
             }
         }
+        return headlinesWithCategory
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

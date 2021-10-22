@@ -1,16 +1,18 @@
 package com.revelatestudio.revelate.view.headline.category
 
 import android.os.Bundle
+import com.revelatestudio.revelate.util.gone
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.revelatestudio.revelate.databinding.FragmentCategoryBinding
 import com.revelatestudio.revelate.data.dataholder.NewsCategory
+import com.revelatestudio.revelate.data.source.remote.NewsResponse
 
 import com.revelatestudio.revelate.util.*
+import com.revelatestudio.revelate.view.adapter.NewsListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -43,29 +45,27 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = NewsListAdapter { item ->
+
+        }
+        adapter.setContext(requireContext())
+        binding.rvHeadlinesCategory.adapter = adapter
+
         viewModel.setDefaultCountryCode("us")
+        newsCategory?.let { category ->
+            viewModel.getTopHeadlinesByCountryWithCategory(category.categoryName).observe(viewLifecycleOwner, { response ->
+                if (response.data != null) {
+                    binding.loadingShimmer.root.gone()
+                    displayListArticlesItem(adapter, response)
+                }
+            })
+        }
+    }
 
-        when (newsCategory?.position) {
-            BUSINESS -> {
-                viewModel.headlinesWithCategory.observe(viewLifecycleOwner, Observer {
-//                    viewModel.getTopHeadlinesByCountryWithCategory(category =  )
-                })
-            }
-            TECHNOLOGY -> {
-
-            }
-            ENTERTAINMENT -> {
-
-            }
-            GENERAL -> {
-
-            }
-            HEALTH -> {
-
-            }
-            SCIENCE -> {
-
-            }
+    private fun displayListArticlesItem(adapter: NewsListAdapter, response: Resource<NewsResponse>?) {
+        val result = response?.data?.articles
+        if (result != null) {
+            adapter.submitList(result)
         }
     }
 

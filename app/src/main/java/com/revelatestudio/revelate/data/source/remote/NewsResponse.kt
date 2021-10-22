@@ -1,8 +1,8 @@
-package com.revelatestudio.revelate.data.source
+package com.revelatestudio.revelate.data.source.remote
 
 import com.google.gson.annotations.SerializedName
 
-data class NewsReponse(
+data class NewsResponse(
 
 	@field:SerializedName("totalResults")
 	val totalResults: Int? = null,
@@ -47,5 +47,9 @@ data class ArticlesItem(
 	val url: String? = null,
 
 	@field:SerializedName("content")
-	val content: String? = null
-)
+	val content: String? = null,
+
+	val saved : Int = 0
+
+) {
+}

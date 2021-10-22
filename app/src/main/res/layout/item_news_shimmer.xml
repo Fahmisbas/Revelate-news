@@ -82,7 +82,7 @@
             app:layout_constraintEnd_toStartOf="@id/btn_bookmark"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="@dimen/margin_padding_size_small"
-            android:src="@drawable/ic_bookmark" />
+            android:src="@drawable/ic_bookmarked" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

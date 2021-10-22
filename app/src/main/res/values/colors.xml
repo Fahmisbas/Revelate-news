@@ -10,5 +10,6 @@
 
     <color name="primaryColor">#5fabf4</color>
     <color name="semiGray">#f5f6f6</color>
+    <color name="textColorBody">#151515</color>
 
 </resources>

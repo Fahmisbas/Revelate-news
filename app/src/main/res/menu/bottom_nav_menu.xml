@@ -12,6 +12,6 @@
         android:title="Search" />
     <item
         android:id="@+id/bookmarkFragment"
-        android:icon="@drawable/ic_bookmark"
+        android:icon="@drawable/ic_bookmarked"
         android:title="Saved" />
 </menu>

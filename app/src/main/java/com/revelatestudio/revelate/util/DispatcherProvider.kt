@@ -7,5 +7,4 @@ interface DispatcherProvider {
     val io: CoroutineDispatcher
     val default: CoroutineDispatcher
     val unconfined: CoroutineDispatcher
-
 }
