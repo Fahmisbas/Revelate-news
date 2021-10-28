@@ -44,7 +44,5 @@ object AppModule {
             get() = Dispatchers.Default
         override val unconfined: CoroutineDispatcher
             get() = Dispatchers.Unconfined
-
     }
-
 }

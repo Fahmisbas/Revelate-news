@@ -1,22 +1,26 @@
 package com.revelatestudio.revelate.view.headline.category.adapter
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.revelatestudio.revelate.util.Category
+import com.revelatestudio.revelate.R
+import com.revelatestudio.revelate.util.getNewsCategories
 import com.revelatestudio.revelate.view.headline.category.CategoryFragment
 
 
 
-class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+class ViewPagerAdapter(val context : Context,fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
+    private val newsCategories = context.getNewsCategories()
+
     override fun getItemCount(): Int {
-        return  Category.newsCategories.size
+        return  newsCategories.size
     }
 
-    override fun createFragment(categoryPosition: Int): Fragment {
-        return CategoryFragment.newInstance(Category.newsCategories[categoryPosition])
+    override fun createFragment(position: Int): Fragment {
+        return CategoryFragment.newInstance(newsCategories[position])
     }
 }

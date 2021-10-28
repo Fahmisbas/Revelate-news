@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 data class NewsResponse(
 
-	@field:SerializedName("totalResults")
+    @field:SerializedName("totalResults")
 	val totalResults: Int? = null,
 
-	@field:SerializedName("articles")
-	val articles: List<ArticlesItem?>? = null,
+    @field:SerializedName("articles")
+	val articles: List<ArticleItem?>? = null,
 
-	@field:SerializedName("status")
+    @field:SerializedName("status")
 	val status: String? = null
 )
 
@@ -23,7 +23,7 @@ data class Source(
 	val id: String? = null
 )
 
-data class ArticlesItem(
+data class ArticleItem(
 
 	@field:SerializedName("publishedAt")
 	val publishedAt: String? = null,

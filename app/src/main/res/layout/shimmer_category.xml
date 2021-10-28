@@ -1,35 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.facebook.shimmer.ShimmerFrameLayout android:id="@+id/shimmer_view_container"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/shimmer_view_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_margin="@dimen/margin_padding_size_medium"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            android:text="............................"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@android:color/darker_gray"
+            android:background="@android:color/darker_gray"
+            android:textStyle="bold" />
 
-            <include layout="@layout/item_news_shimmer"
-                android:layout_marginTop="@dimen/margin_padding_size_medium"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <include layout="@layout/item_news_shimmer"
-                android:layout_marginTop="@dimen/margin_padding_size_large"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <include layout="@layout/item_news_shimmer"
-                android:layout_marginTop="@dimen/margin_padding_size_large"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"/>
+                <include
+                    layout="@layout/item_news_shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_padding_size_medium" />
 
-        </LinearLayout>
+                <include
+                    layout="@layout/item_news_shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_padding_size_large" />
 
-    </ScrollView>
+                <include
+                    layout="@layout/item_news_shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_padding_size_large" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
 
 </com.facebook.shimmer.ShimmerFrameLayout>

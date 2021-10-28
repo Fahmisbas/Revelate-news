@@ -1,15 +1,15 @@
 package com.revelatestudio.revelate.util
 
+import android.content.Context
+import com.revelatestudio.revelate.R
 import com.revelatestudio.revelate.data.dataholder.NewsCategory
 
-object Category {
-    val newsCategories = arrayListOf(
-        NewsCategory("Business", BUSINESS),
-        NewsCategory("Entertainment", ENTERTAINMENT),
-        NewsCategory("General", GENERAL),
-        NewsCategory("Health", HEALTH),
-        NewsCategory("Science", SCIENCE),
-        NewsCategory("Sports", SPORTS),
-        NewsCategory("Technology", TECHNOLOGY)
-    )
+
+fun Context.getNewsCategories() : ArrayList<NewsCategory>{
+    val stringArrayCategories = resources.getStringArray(R.array.categories)
+    val categories = arrayListOf<NewsCategory>()
+    for ((index, category) in stringArrayCategories.withIndex()) {
+        categories.add(NewsCategory(category, index))
+    }
+    return categories
 }

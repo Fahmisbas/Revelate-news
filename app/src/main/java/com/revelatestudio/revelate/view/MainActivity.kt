@@ -1,7 +1,7 @@
 package com.revelatestudio.revelate.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.revelatestudio.revelate.R

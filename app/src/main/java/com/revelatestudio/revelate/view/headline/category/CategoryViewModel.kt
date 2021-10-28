@@ -1,5 +1,6 @@
 package com.revelatestudio.revelate.view.headline.category
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +19,6 @@ class CategoryViewModel @Inject constructor(
     private val dispatcher: DispatcherProvider
 ) : ViewModel(){
 
-
     fun setDefaultCountryCode(countryCode : String) {
         repository.setDefaultCountryCode(countryCode)
     }
@@ -27,7 +27,7 @@ class CategoryViewModel @Inject constructor(
         val mutableHeadlinesByCountryWithCategory = MutableLiveData<Resource<NewsResponse>>(Resource.Empty())
         val headlinesByCountryWithCategory : LiveData<Resource<NewsResponse>> = mutableHeadlinesByCountryWithCategory
         viewModelScope.launch(dispatcher.io) {
-            when(val response =  repository.getTopHeadlinesWithCategory(category)) {
+            when(val response =  repository.getTopHeadlinesByCountryWithCategory(category)) {
                 is Resource.Error -> {
                     mutableHeadlinesByCountryWithCategory.postValue(Resource.Error("Unexpected Error"))
                 }
@@ -37,25 +37,5 @@ class CategoryViewModel @Inject constructor(
             }
         }
         return headlinesByCountryWithCategory
-    }
-
-    fun getTopHeadlinesByCountry(): LiveData<Resource<NewsResponse>> {
-        val mutableHeadlinesWithCategory = MutableLiveData<Resource<NewsResponse>>(Resource.Empty())
-        val headlinesWithCategory : LiveData<Resource<NewsResponse>> = mutableHeadlinesWithCategory
-        viewModelScope.launch(dispatcher.io) {
-            when(val response =  repository.getTopHeadlinesByCountry()) {
-                is Resource.Error -> {
-                    mutableHeadlinesWithCategory.postValue(Resource.Error("Unexpected Error"))
-                }
-                is Resource.Success -> {
-                    mutableHeadlinesWithCategory.postValue(response)
-                }
-            }
-        }
-        return headlinesWithCategory
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 }

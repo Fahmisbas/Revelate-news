@@ -9,14 +9,19 @@
         android:layout_height="wrap_content"
         android:text="Explore"
         android:textSize="@dimen/text_size_large"
-        android:textColor="@color/black"
+        android:textColor="@color/textColorBody"
         android:textStyle="bold"/>
 
     <EditText
-        android:id="@+id/edit_query"
+        android:id="@+id/edit_search"
         android:layout_width="match_parent"
         android:layout_height="38dp"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:lines="1"
+        android:focusable="false"
         android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:maxEms="1"
         android:padding="@dimen/margin_padding_size_small"
         android:elevation="2dp"
         android:background="@drawable/selector_search_textfield"

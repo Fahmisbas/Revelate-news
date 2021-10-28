@@ -9,7 +9,15 @@
         android:id="@+id/searchFragment"
         android:name="com.revelatestudio.revelate.view.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_searchDetailFragment"
+            app:destination="@id/searchDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/headlineFragment"
         android:name="com.revelatestudio.revelate.view.headline.HeadlineFragment"
@@ -20,4 +28,8 @@
         android:name="com.revelatestudio.revelate.view.bookmark.SavedArticleFragment"
         android:label="fragment_bookmark"
         tools:layout="@layout/fragment_saved_article" />
+    <fragment
+        android:id="@+id/searchDetailFragment"
+        android:name="com.revelatestudio.revelate.view.search.detail.SearchDetailFragment"
+        android:label="SearchDetailFragment" />
 </navigation>

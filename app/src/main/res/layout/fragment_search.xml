@@ -23,49 +23,33 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <include
+            android:id="@+id/loading_shimmer"
             layout="@layout/shimmer_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/rv_search_history" />
-
-        <TextView
-            android:id="@+id/title_search_history"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_medium"
-            android:text="Search History"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_large"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/search" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clear"
-            android:textColor="@color/primaryColor"
-            android:layout_marginEnd="@dimen/margin_padding_size_small"
-            app:layout_constraintBottom_toTopOf="@+id/rv_search_history"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_search_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_medium"
-            app:layout_constraintTop_toBottomOf="@id/title_search_history" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_medium"
-            app:layout_constraintTop_toBottomOf="@id/rv_search_history"
-            tools:listitem="@layout/item_news"
+            app:layout_constraintTop_toBottomOf="@id/title_general_news"
             tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/title_general_news"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="General News"
+            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            app:layout_constraintTop_toBottomOf="@id/search"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/textColorBody"
+            android:textStyle="bold"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_general_news"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/title_general_news"
+            tools:listitem="@layout/item_news" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
