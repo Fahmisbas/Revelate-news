@@ -2,6 +2,7 @@ package com.revelatestudio.revelate.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.NetworkInfo
@@ -43,9 +44,10 @@ fun getRelativeTimeSpanString(source: String?): CharSequence {
 }
 
 fun Activity.recreateActivity() { // for configuration changes
-    val intent = intent;
-    finish();
-    startActivity(intent);
+    val intent = intent
+    finish()
+    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+    startActivity(intent)
 }
 
 @RequiresApi(Build.VERSION_CODES.M)

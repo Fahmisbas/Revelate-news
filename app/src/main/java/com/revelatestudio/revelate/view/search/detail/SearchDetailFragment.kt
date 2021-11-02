@@ -43,9 +43,12 @@ class SearchDetailFragment : Fragment() {
 
         with(binding) {
 
-            val newsAdapter = NewsListAdapter {
+            val newsAdapter = NewsListAdapter(onItemClick = {
                 onItemClick(it)
-            }
+            }, onSaveButtonClick = { isSave, news ->
+
+            },
+            lifecycleOwner = viewLifecycleOwner)
             val searchHistoryAdapter = SearchHistoryListAdapter {
                 onItemClick(it)
             }
@@ -66,6 +69,7 @@ class SearchDetailFragment : Fragment() {
                             val result = response.data?.articles
                             submitList(result, newsAdapter)
                         })
+                    hideSoftInputFromWindow()
                 }
                 true
             }

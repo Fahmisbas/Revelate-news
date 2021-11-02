@@ -1,45 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:id="@+id/swipe_refresh"
+    android:orientation="vertical"
     tools:context=".view.headline.category.CategoryFragment">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margin_padding_size_medium"
-        android:layout_marginEnd="@dimen/margin_padding_size_medium"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_headline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_large"
-            android:text="@string/top_headlines"
-            android:textColor="@color/black"
-            android:visibility="gone"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textStyle="bold"/>
 
-        <include
-            android:id="@+id/loading_shimmer"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            layout="@layout/shimmer_category"
-            android:visibility="visible"/>
+            android:layout_marginStart="@dimen/margin_padding_size_medium"
+            android:layout_marginEnd="@dimen/margin_padding_size_medium"
+            android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_headlines_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_news"
-            tools:visibility="gone" />
+            <TextView
+                android:id="@+id/tv_headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_size_large"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
-    </LinearLayout>
+            <include
+                android:id="@+id/loading_shimmer"
+                layout="@layout/shimmer_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
 
-</androidx.core.widget.NestedScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_headlines_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_news"
+                tools:visibility="gone" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

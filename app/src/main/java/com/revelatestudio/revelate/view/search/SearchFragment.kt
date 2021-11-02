@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.revelatestudio.revelate.data.source.remote.ArticleItem
 import com.revelatestudio.revelate.databinding.FragmentSearchBinding
 import com.revelatestudio.revelate.util.gone
+import com.revelatestudio.revelate.util.visible
 
 import com.revelatestudio.revelate.view.adapter.NewsListAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,15 +36,20 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = NewsListAdapter {
+        val adapter = NewsListAdapter(onItemClick = {
             onItemClick(it)
-        }
+        },onSaveButtonClick =  { isSave, news ->
+
+        },
+        lifecycleOwner = viewLifecycleOwner)
 
         binding.rvGeneralNews.adapter = adapter
         viewModel.getTopHeadlinesByCountry().observe(viewLifecycleOwner, { response ->
             val result = response.data?.articles
             if(result != null) {
                 binding.loadingShimmer.root.gone()
+                binding.titleGeneralNews.visible()
+
                 adapter.submitList(result)
             }
 

@@ -1,6 +1,5 @@
 package com.revelatestudio.revelate.view.headline.category
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +7,7 @@ import com.revelatestudio.revelate.data.repository.Repository
 import com.revelatestudio.revelate.data.source.remote.NewsResponse
 import com.revelatestudio.revelate.util.DispatcherProvider
 import androidx.lifecycle.viewModelScope
+import com.revelatestudio.revelate.data.source.local.News
 import com.revelatestudio.revelate.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,18 +24,56 @@ class CategoryViewModel @Inject constructor(
     }
 
     fun getTopHeadlinesByCountryWithCategory(category : String) : LiveData<Resource<NewsResponse>> {
-        val mutableHeadlinesByCountryWithCategory = MutableLiveData<Resource<NewsResponse>>(Resource.Empty())
-        val headlinesByCountryWithCategory : LiveData<Resource<NewsResponse>> = mutableHeadlinesByCountryWithCategory
+        val headline = MutableLiveData<Resource<NewsResponse>>(Resource.Empty())
         viewModelScope.launch(dispatcher.io) {
             when(val response =  repository.getTopHeadlinesByCountryWithCategory(category)) {
                 is Resource.Error -> {
-                    mutableHeadlinesByCountryWithCategory.postValue(Resource.Error("Unexpected Error"))
+                    headline.postValue(Resource.Error("Unexpected Error"))
                 }
                 is Resource.Success -> {
-                    mutableHeadlinesByCountryWithCategory.postValue(response)
+                    headline.postValue(response)
                 }
             }
         }
-        return headlinesByCountryWithCategory
+        return headline
     }
+
+    fun getSavedNews() : LiveData<List<News>?> {
+        val news = MutableLiveData<List<News>>()
+        viewModelScope.launch(dispatcher.io) {
+            news.postValue(repository.getSavedNews().data)
+        }
+        return news
+    }
+
+    fun insertNews(news: News) : LiveData<Long>{
+        val id = MutableLiveData<Long>()
+        viewModelScope.launch(dispatcher.io) {
+            val newsId = repository.insertNews(news)
+            id.postValue(newsId)
+        }
+        return id
+    }
+
+    fun deleteNews(news: News) {
+        viewModelScope.launch(dispatcher.io) {
+            repository.deleteNews(news)
+        }
+    }
+
+    fun getItemNews(title : String) : LiveData<News>{
+        val isNewsExist = MutableLiveData<News>()
+        viewModelScope.launch(dispatcher.io) {
+            when(repository.getItemNews(title)) {
+                is Resource.Success -> {
+                    isNewsExist.postValue(repository.getItemNews(title).data)
+                }
+                else -> {
+                    isNewsExist.postValue(null)
+                }
+            }
+        }
+        return isNewsExist
+    }
+
 }

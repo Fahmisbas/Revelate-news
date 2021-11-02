@@ -1,12 +1,18 @@
 package com.revelatestudio.revelate.di
 
+import android.content.Context
+import androidx.room.Room
 import com.revelatestudio.revelate.data.repository.MainRepository
 import com.revelatestudio.revelate.data.repository.Repository
+import com.revelatestudio.revelate.data.source.local.NewsDao
+import com.revelatestudio.revelate.data.source.local.NewsDatabase
 import com.revelatestudio.revelate.data.source.remote.NewsApi
 import com.revelatestudio.revelate.util.DispatcherProvider
+import com.revelatestudio.revelate.util.NEWS_DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +26,24 @@ const val BASE_URL = "https://newsapi.org/"
 @InstallIn(SingletonComponent::class) // Global Scope
 object AppModule {
 
+
+
+    @Singleton
+    @Provides
+    fun provideNewsDatabase(
+        @ApplicationContext app : Context
+    ) = Room.databaseBuilder(
+        app,
+        NewsDatabase::class.java,
+        NEWS_DATABASE_NAME
+    ).build()
+
+
+    @Singleton
+    @Provides
+    fun provideNewsDao(db : NewsDatabase) = db.getNewsDao()
+
+
     @Singleton
     @Provides
     fun provideNewsApi(): NewsApi =
@@ -31,7 +55,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMainRepository(api: NewsApi) : Repository = MainRepository(api)
+    fun provideMainRepository(api: NewsApi, newsDao : NewsDao) : Repository = MainRepository(api, newsDao)
+
 
     @Singleton
     @Provides

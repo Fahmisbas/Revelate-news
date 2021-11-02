@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.revelatestudio.revelate.databinding.FragmentSavedArticleBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class SavedArticleFragment : Fragment() {
 
     private var _binding : FragmentSavedArticleBinding? = null

@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.revelatestudio.revelate.R
 import com.revelatestudio.revelate.data.dataholder.NewsCategory
-import com.revelatestudio.revelate.data.source.remote.NewsResponse
+import com.revelatestudio.revelate.data.source.local.News
+import com.revelatestudio.revelate.data.source.remote.ArticleItem
 import com.revelatestudio.revelate.databinding.FragmentCategoryBinding
 import com.revelatestudio.revelate.databinding.LayoutNoInternetConnectionBinding
 import com.revelatestudio.revelate.util.*
@@ -33,12 +35,13 @@ class CategoryFragment : Fragment() {
 
     private val viewModel: CategoryViewModel by viewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
-            val data = bundle.getParcelable<NewsCategory>(NEWS_CATEGORY)
-            if (data != null) {
-                newsCategory = data
+            val newsCategory = bundle.getParcelable<NewsCategory>(NEWS_CATEGORY)
+            if (newsCategory != null) {
+                this.newsCategory = newsCategory
             }
         }
     }
@@ -61,44 +64,112 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launch {
-            viewModel.setDefaultCountryCode(requireContext().getPreferenceCountry() ?: US)
-        }
+        binding.apply {
 
-        val adapter = NewsListAdapter(onItemClick = {})
-        binding.rvHeadlinesCategory.adapter = adapter
+            lifecycleScope.launch {
+                viewModel.setDefaultCountryCode(requireContext().getPreferenceCountry() ?: US)
+            }
 
-        viewModel.getTopHeadlinesByCountryWithCategory(newsCategory.categoryName)
-            .observe(viewLifecycleOwner, { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        val data = response.data
-                        if (data != null) {
-                            binding.loadingShimmer.root.gone()
-                            displayArticles(adapter, data)
-                        }
-                    }
-                    else -> {
-                        val message = response.message
-                        if (message != null) {
-                            binding.loadingShimmer.root.gone()
-                            binding.tvHeadline.visible()
-                            binding.tvHeadline.text = message
-                        }
+            newsListAdapter() { adapter ->
+                rvHeadlinesCategory.adapter = adapter
+
+                observeIsDataAlreadySaved(adapter)
+
+                displayArticles(adapter) {
+
+                }
+                swipeRefresh.setOnRefreshListener {
+                    displayArticles(adapter) {
+
                     }
                 }
-            })
+
+            }
+        }
+    }
+
+    private fun newsListAdapter(adapterObj: (NewsListAdapter) -> Unit) {
+        val adapter = NewsListAdapter(onItemClick = {
+
+        }, onSaveButtonClick = { toggleSave, articlesItem ->
+            save(toggleSave, articlesItem)
+        })
+        adapterObj.invoke(adapter)
+    }
+
+    private fun observeIsDataAlreadySaved(adapter: NewsListAdapter) {
+        adapter.setOnGetArticlesItem(object : NewsListAdapter.OnGetArticlesItem{
+            override fun onArticlesItem(articleItem: ArticleItem?) {
+                if (articleItem?.title != null) {
+                    val newsLiveData = viewModel.getItemNews(articleItem.title)
+                    adapter.newsToObserve(newsLiveData, viewLifecycleOwner)
+                }
+            }
+        })
+    }
+
+
+    private var saveNewsId: Long = 0
+    private fun save(toggleSave: Boolean, articleItem: ArticleItem) {
+        with(articleItem) {
+            val news = News(
+                publishedAt = publishedAt,
+                author = author,
+                urlToImage = urlToImage,
+                description = description,
+                source = source?.name,
+                title = title,
+                url = url,
+                content = content,
+            )
+            saveNewsId = id ?: -1
+            if (toggleSave) {
+                viewModel.insertNews(news).observe(viewLifecycleOwner, { id ->
+                    this@CategoryFragment.saveNewsId = id
+                })
+            } else {
+                news.id = saveNewsId
+                viewModel.deleteNews(news = news)
+            }
+        }
     }
 
 
     private fun displayArticles(
         adapter: NewsListAdapter,
-        response: NewsResponse
+        onSuccess: () -> Unit
     ) {
-        val result = response.articles
-        if (result != null) {
-            adapter.submitList(result)
-            binding.tvHeadline.visible()
+        with(binding) {
+            viewModel.getTopHeadlinesByCountryWithCategory(newsCategory.categoryName)
+                .observe(viewLifecycleOwner, { response ->
+                    when (response) {
+                        is Resource.Success -> {
+                            onSuccess.invoke()
+                            val articles = response.data?.articles
+                            if (articles != null) {
+                                adapter.submitList(articles)
+                                tvHeadline.text =
+                                    requireContext().resources.getString(R.string.top_headlines)
+                                loadingUiFinish()
+                            }
+                        }
+                        else -> {
+                            val message = response.message
+                            if (message != null) {
+                                tvHeadline.text = message
+                                loadingUiFinish()
+                            } else tvHeadline.text = ERR_MSG
+                        }
+                    }
+                })
+        }
+    }
+
+    private fun loadingUiFinish() {
+        with(binding) {
+            loadingShimmer.root.gone()
+            swipeRefresh.isRefreshing = false
+            tvHeadline.visible()
         }
     }
 

@@ -1,5 +1,7 @@
 package com.revelatestudio.revelate.data.source.remote
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class NewsResponse(
@@ -49,7 +51,7 @@ data class ArticleItem(
 	@field:SerializedName("content")
 	val content: String? = null,
 
-	val saved : Int = 0
-
 ) {
+
+	var id : Long? = null
 }

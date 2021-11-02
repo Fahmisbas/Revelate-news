@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revelatestudio.revelate.data.repository.Repository
+import com.revelatestudio.revelate.data.source.local.News
 import com.revelatestudio.revelate.data.source.remote.NewsResponse
 import com.revelatestudio.revelate.util.DispatcherProvider
 import com.revelatestudio.revelate.util.Resource
@@ -29,6 +30,21 @@ class SearchViewModel @Inject constructor(
             }
         }
         return headlinesWithCategory
+    }
+
+    fun getItemNews(title : String) : LiveData<News>{
+        val isNewsExist = MutableLiveData<News>()
+        viewModelScope.launch(dispatcher.io) {
+            when(repository.getItemNews(title)) {
+                is Resource.Success -> {
+                    isNewsExist.postValue(repository.getItemNews(title).data)
+                }
+                else -> {
+                    isNewsExist.postValue(null)
+                }
+            }
+        }
+        return isNewsExist
     }
 
 }
