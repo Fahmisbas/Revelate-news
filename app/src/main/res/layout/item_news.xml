@@ -63,12 +63,12 @@
                 android:id="@+id/tv_source"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@id/btn_bookmark"
-                android:layout_marginEnd="@dimen/margin_padding_size_small"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/margin_padding_size_medium"
+                android:layout_marginEnd="@dimen/margin_padding_size_small"
+                android:layout_toStartOf="@id/btn_bookmark"
                 android:textSize="12sp"
                 tools:text="The New York Times - 41 Minutes ago" />
 

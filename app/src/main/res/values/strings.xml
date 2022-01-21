@@ -17,4 +17,6 @@
         <item>Technology</item>
     </string-array>
 
+    <string name="result" translatable="false">Result</string>
+
 </resources>

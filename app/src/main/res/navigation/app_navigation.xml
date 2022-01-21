@@ -32,4 +32,9 @@
         android:id="@+id/searchDetailFragment"
         android:name="com.revelatestudio.revelate.view.search.detail.SearchDetailFragment"
         android:label="SearchDetailFragment" />
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.revelatestudio.revelate.view.headline.category.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" />
 </navigation>

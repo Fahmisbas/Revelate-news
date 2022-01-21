@@ -11,7 +11,9 @@ import com.revelatestudio.revelate.databinding.FragmentHeadlineBinding
 import com.revelatestudio.revelate.util.*
 import com.revelatestudio.revelate.util.Locale.INDONESIA
 import com.revelatestudio.revelate.util.Locale.US
-import com.revelatestudio.revelate.util.Preferences.COUNTRY_PREF_KEY
+import com.revelatestudio.revelate.util.ext.Preferences.COUNTRY_PREF_KEY
+import com.revelatestudio.revelate.util.ext.dataStore
+import com.revelatestudio.revelate.util.ext.getNewsCategories
 import com.revelatestudio.revelate.view.MainActivity
 import com.revelatestudio.revelate.view.headline.category.adapter.ViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint

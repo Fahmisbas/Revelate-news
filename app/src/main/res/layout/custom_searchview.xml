@@ -18,6 +18,7 @@
         android:layout_height="38dp"
         android:singleLine="true"
         android:maxLines="1"
+        android:drawableStart="@drawable/ic_search"
         android:lines="1"
         android:focusable="false"
         android:layout_marginTop="@dimen/margin_padding_size_medium"

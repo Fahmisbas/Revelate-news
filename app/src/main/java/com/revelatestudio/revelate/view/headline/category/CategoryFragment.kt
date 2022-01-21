@@ -1,5 +1,6 @@
 package com.revelatestudio.revelate.view.headline.category
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,15 +9,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.revelatestudio.revelate.R
 import com.revelatestudio.revelate.data.dataholder.NewsCategory
-import com.revelatestudio.revelate.data.source.local.News
-import com.revelatestudio.revelate.data.source.remote.ArticleItem
+import com.revelatestudio.revelate.data.dataholder.News
+import com.revelatestudio.revelate.data.source.remote.NewsItemResponse
+import com.revelatestudio.revelate.data.source.remote.NewsResponse
 import com.revelatestudio.revelate.databinding.FragmentCategoryBinding
 import com.revelatestudio.revelate.databinding.LayoutNoInternetConnectionBinding
 import com.revelatestudio.revelate.util.*
 import com.revelatestudio.revelate.util.Locale.US
+import com.revelatestudio.revelate.util.ext.getPreferenceCountry
+import com.revelatestudio.revelate.util.ext.gone
+import com.revelatestudio.revelate.util.ext.visible
 import com.revelatestudio.revelate.view.adapter.NewsListAdapter
+import com.revelatestudio.revelate.view.detail.DetailActivity
+import com.revelatestudio.revelate.view.detail.EXTRA_NEWS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -70,18 +78,15 @@ class CategoryFragment : Fragment() {
                 viewModel.setDefaultCountryCode(requireContext().getPreferenceCountry() ?: US)
             }
 
-            newsListAdapter() { adapter ->
+            newsListAdapter { adapter ->
                 rvHeadlinesCategory.adapter = adapter
 
-                observeIsDataAlreadySaved(adapter)
+                observeIsNewsItemAlreadySaved(adapter)
 
-                displayArticles(adapter) {
+                observeNewsList(adapter)
 
-                }
                 swipeRefresh.setOnRefreshListener {
-                    displayArticles(adapter) {
-
-                    }
+                    observeNewsList(adapter)
                 }
 
             }
@@ -89,19 +94,43 @@ class CategoryFragment : Fragment() {
     }
 
     private fun newsListAdapter(adapterObj: (NewsListAdapter) -> Unit) {
-        val adapter = NewsListAdapter(onItemClick = {
-
+        val adapter = NewsListAdapter(onItemClick = { news ->
+            navigateToDetailFragment(news)
         }, onSaveButtonClick = { toggleSave, articlesItem ->
             save(toggleSave, articlesItem)
         })
         adapterObj.invoke(adapter)
     }
 
-    private fun observeIsDataAlreadySaved(adapter: NewsListAdapter) {
-        adapter.setOnGetArticlesItem(object : NewsListAdapter.OnGetArticlesItem{
-            override fun onArticlesItem(articleItem: ArticleItem?) {
-                if (articleItem?.title != null) {
-                    val newsLiveData = viewModel.getItemNews(articleItem.title)
+    private fun navigateToDetailFragment(newsResponse: NewsItemResponse) {
+
+        newsResponse.apply {
+            val news = News(
+                publishedAt = publishedAt,
+                author = author,
+                urlToImage = urlToImage,
+                description = description,
+                source = source?.name,
+                title = title,
+                url = url,
+                content = content
+            )
+
+            activity?.let{
+                val intent = Intent (it, DetailActivity::class.java)
+                intent.putExtra(EXTRA_NEWS, news)
+                it.startActivity(intent)
+            }
+
+        }
+
+    }
+
+    private fun observeIsNewsItemAlreadySaved(adapter: NewsListAdapter) {
+        adapter.setOnGetArticlesItem(object : NewsListAdapter.OnGetNewsItem {
+            override fun onArticlesItem(newsItemResponse: NewsItemResponse?) {
+                if (newsItemResponse?.title != null) {
+                    val newsLiveData = viewModel.getItemNews(newsItemResponse.title)
                     adapter.newsToObserve(newsLiveData, viewLifecycleOwner)
                 }
             }
@@ -109,9 +138,9 @@ class CategoryFragment : Fragment() {
     }
 
 
-    private var saveNewsId: Long = 0
-    private fun save(toggleSave: Boolean, articleItem: ArticleItem) {
-        with(articleItem) {
+    private fun save(toggleSave: Boolean, newsItemResponse: NewsItemResponse) {
+        var saveNewsId: Long
+        with(newsItemResponse) {
             val news = News(
                 publishedAt = publishedAt,
                 author = author,
@@ -125,43 +154,47 @@ class CategoryFragment : Fragment() {
             saveNewsId = id ?: -1
             if (toggleSave) {
                 viewModel.insertNews(news).observe(viewLifecycleOwner, { id ->
-                    this@CategoryFragment.saveNewsId = id
+                    saveNewsId = id
                 })
             } else {
                 news.id = saveNewsId
-                viewModel.deleteNews(news = news)
+                viewModel.deleteNews(news)
             }
         }
     }
 
 
-    private fun displayArticles(
+    private fun observeNewsList(
         adapter: NewsListAdapter,
-        onSuccess: () -> Unit
     ) {
+
+        viewModel.getTopHeadlinesByCountryWithCategory(newsCategory.categoryName)
+            .observe(viewLifecycleOwner, { response ->
+                displayNews(response, adapter)
+            })
+
+    }
+
+    private fun displayNews(response: Resource<NewsResponse>?, adapter: NewsListAdapter) {
         with(binding) {
-            viewModel.getTopHeadlinesByCountryWithCategory(newsCategory.categoryName)
-                .observe(viewLifecycleOwner, { response ->
-                    when (response) {
-                        is Resource.Success -> {
-                            onSuccess.invoke()
-                            val articles = response.data?.articles
-                            if (articles != null) {
-                                adapter.submitList(articles)
-                                tvHeadline.text =
-                                    requireContext().resources.getString(R.string.top_headlines)
-                                loadingUiFinish()
-                            }
-                        }
-                        else -> {
-                            val message = response.message
-                            if (message != null) {
-                                tvHeadline.text = message
-                                loadingUiFinish()
-                            } else tvHeadline.text = ERR_MSG
-                        }
+            when (response) {
+                is Resource.Success -> {
+                    val news = response.data?.newsResponses
+                    if (news != null) {
+                        adapter.submitList(news)
+                        tvHeadline.text =
+                            requireContext().resources.getString(R.string.top_headlines)
+                        loadingUiFinish()
                     }
-                })
+                }
+                else -> {
+                    val message = response?.message
+                    if (message != null) {
+                        tvHeadline.text = message
+                        loadingUiFinish()
+                    } else tvHeadline.text = SERVER_ERR_MSG
+                }
+            }
         }
     }
 

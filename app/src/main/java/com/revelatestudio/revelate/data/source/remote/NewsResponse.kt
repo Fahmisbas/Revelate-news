@@ -1,8 +1,8 @@
 package com.revelatestudio.revelate.data.source.remote
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class NewsResponse(
 
@@ -10,7 +10,7 @@ data class NewsResponse(
 	val totalResults: Int? = null,
 
     @field:SerializedName("articles")
-	val articles: List<ArticleItem?>? = null,
+	val newsResponses: List<NewsItemResponse?>? = null,
 
     @field:SerializedName("status")
 	val status: String? = null
@@ -25,7 +25,7 @@ data class Source(
 	val id: String? = null
 )
 
-data class ArticleItem(
+data class NewsItemResponse(
 
 	@field:SerializedName("publishedAt")
 	val publishedAt: String? = null,
@@ -51,7 +51,7 @@ data class ArticleItem(
 	@field:SerializedName("content")
 	val content: String? = null,
 
-) {
+)  {
 
 	var id : Long? = null
 }

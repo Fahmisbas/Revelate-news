@@ -6,42 +6,42 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.revelatestudio.revelate.data.source.local.News
-import com.revelatestudio.revelate.data.source.remote.ArticleItem
+import com.revelatestudio.revelate.data.dataholder.News
+import com.revelatestudio.revelate.data.source.remote.NewsItemResponse
 import com.revelatestudio.revelate.databinding.ItemNewsBinding
 
-class NewsListAdapter(private val onItemClick : (ArticleItem) -> Unit, private val onSaveButtonClick : (Boolean, ArticleItem) -> Unit
+class NewsListAdapter(private val onItemClick : (NewsItemResponse) -> Unit, private val onSaveButtonClick : (Boolean, NewsItemResponse) -> Unit
                       , private var newsLiveData : LiveData<News>? = null, var lifecycleOwner: LifecycleOwner? = null) :
-   ListAdapter<ArticleItem , ViewHolder>(DIFF_CALLBACK) {
+   ListAdapter<NewsItemResponse , NewsViewHolder>(DIFF_CALLBACK) {
 
-    private var onGetArticlesItem : OnGetArticlesItem? = null
+    private var onGetNewsItem : OnGetNewsItem? = null
 
     fun newsToObserve(news : LiveData<News>, lifecycleOwner: LifecycleOwner) {
         this.newsLiveData = news
         this.lifecycleOwner = lifecycleOwner
     }
 
-    fun setOnGetArticlesItem(onGetArticlesItem: OnGetArticlesItem) {
-        this.onGetArticlesItem = onGetArticlesItem
+    fun setOnGetArticlesItem(onGetNewsItem: OnGetNewsItem) {
+        this.onGetNewsItem = onGetNewsItem
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val binding = ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding,parent.context)
+        return NewsViewHolder(binding,parent.context)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holderNews: NewsViewHolder, position: Int) {
         val articlesItem = currentList[position]
 
-        onGetArticlesItem?.onArticlesItem(articlesItem)
+        onGetNewsItem?.onArticlesItem(articlesItem)
 
-        holder.itemView.setOnClickListener {
+        holderNews.itemView.setOnClickListener {
             onItemClick.invoke(articlesItem)
         }
 
-        if (newsLiveData != null && lifecycleOwner != null) holder.newsToObserve(articlesItem, newsLiveData, lifecycleOwner)
+        if (newsLiveData != null && lifecycleOwner != null) holderNews.newsToObserve(articlesItem, newsLiveData, lifecycleOwner)
 
-        holder.bind(articlesItem) { toggleSave, newsItem  ->
+        holderNews.bind(articlesItem) { toggleSave, newsItem  ->
             onSaveButtonClick.invoke(toggleSave, newsItem )
         }
     }
@@ -49,17 +49,17 @@ class NewsListAdapter(private val onItemClick : (ArticleItem) -> Unit, private v
     override fun getItemCount() = currentList.size
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ArticleItem>() {
-            override fun areItemsTheSame(oldItem: ArticleItem, newItem: ArticleItem): Boolean {
-                return oldItem.content == newItem.content
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NewsItemResponse>() {
+            override fun areItemsTheSame(oldItemResponse: NewsItemResponse, newItemResponse: NewsItemResponse): Boolean {
+                return oldItemResponse.title == newItemResponse.title
             }
-            override fun areContentsTheSame(oldItem: ArticleItem, newItem: ArticleItem): Boolean {
-                return oldItem == newItem
+            override fun areContentsTheSame(oldItemResponse: NewsItemResponse, newItemResponse: NewsItemResponse): Boolean {
+                return oldItemResponse.content == newItemResponse.content
             }
         }
     }
 
-    interface OnGetArticlesItem {
-        fun onArticlesItem(articleItem: ArticleItem?)
+    interface OnGetNewsItem {
+        fun onArticlesItem(newsItemResponse: NewsItemResponse?)
     }
 }

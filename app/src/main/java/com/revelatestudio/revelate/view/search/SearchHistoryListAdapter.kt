@@ -33,13 +33,12 @@ class SearchHistoryListAdapter(private val onItemClick : (SearchHistory) -> Unit
         fun bind(item: SearchHistory?) {
             binding.tvKeyword.text = item?.keyword
         }
-
     }
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<SearchHistory>() {
             override fun areItemsTheSame(oldItem: SearchHistory, newItem: SearchHistory): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.keyword == newItem.keyword
             }
             @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(oldItem: SearchHistory, newItem: SearchHistory): Boolean {

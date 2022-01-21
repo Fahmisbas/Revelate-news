@@ -7,7 +7,7 @@ import com.revelatestudio.revelate.data.repository.Repository
 import com.revelatestudio.revelate.data.source.remote.NewsResponse
 import com.revelatestudio.revelate.util.DispatcherProvider
 import androidx.lifecycle.viewModelScope
-import com.revelatestudio.revelate.data.source.local.News
+import com.revelatestudio.revelate.data.dataholder.News
 import com.revelatestudio.revelate.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -38,13 +38,7 @@ class CategoryViewModel @Inject constructor(
         return headline
     }
 
-    fun getSavedNews() : LiveData<List<News>?> {
-        val news = MutableLiveData<List<News>>()
-        viewModelScope.launch(dispatcher.io) {
-            news.postValue(repository.getSavedNews().data)
-        }
-        return news
-    }
+
 
     fun insertNews(news: News) : LiveData<Long>{
         val id = MutableLiveData<Long>()

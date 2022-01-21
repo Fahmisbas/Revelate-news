@@ -1,7 +1,8 @@
 package com.revelatestudio.revelate.util
 
 
-const val ERR_MSG = "Failed to connect to a server"
+const val SERVER_ERR_MSG = "Failed to connect to a server"
+const val ERR_MSG = "Unexpected Error"
 object Locale{
     const val INDONESIA = "id"
     const val US = "us"

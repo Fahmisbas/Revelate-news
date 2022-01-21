@@ -5,8 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.revelatestudio.revelate.R
-import com.revelatestudio.revelate.util.getNewsCategories
+import com.revelatestudio.revelate.util.ext.getNewsCategories
 import com.revelatestudio.revelate.view.headline.category.CategoryFragment
 
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revelatestudio.revelate.data.repository.Repository
-import com.revelatestudio.revelate.data.source.local.News
+import com.revelatestudio.revelate.data.dataholder.News
 import com.revelatestudio.revelate.data.source.remote.NewsResponse
 import com.revelatestudio.revelate.util.DispatcherProvider
 import com.revelatestudio.revelate.util.Resource
@@ -30,6 +30,21 @@ class SearchViewModel @Inject constructor(
             }
         }
         return headlinesWithCategory
+    }
+
+    fun insertNews(news: News) : LiveData<Long>{
+        val id = MutableLiveData<Long>()
+        viewModelScope.launch(dispatcher.io) {
+            val newsId = repository.insertNews(news)
+            id.postValue(newsId)
+        }
+        return id
+    }
+
+    fun deleteNews(news: News) {
+        viewModelScope.launch(dispatcher.io) {
+            repository.deleteNews(news)
+        }
     }
 
     fun getItemNews(title : String) : LiveData<News>{

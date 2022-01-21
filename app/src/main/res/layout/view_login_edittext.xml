@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Explore"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/textColorBody"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/edit_search"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:drawableStart="@drawable/ic_search"
+        android:lines="1"
+        android:focusable="false"
+        android:layout_marginTop="@dimen/margin_padding_size_medium"
+        android:maxEms="1"
+        android:padding="@dimen/margin_padding_size_small"
+        android:background="@drawable/selector_search_textfield"
+        android:hint="Search news"/>
+
+
+</LinearLayout>

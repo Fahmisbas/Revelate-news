@@ -6,6 +6,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.revelatestudio.revelate.R
 import com.revelatestudio.revelate.databinding.ActivityMainBinding
+
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
         setupBottomNavigation()
     }
 

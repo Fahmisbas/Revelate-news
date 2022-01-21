@@ -1,4 +1,4 @@
-package com.revelatestudio.revelate.util
+package com.revelatestudio.revelate.util.ext
 
 import android.content.Context
 import androidx.datastore.preferences.core.stringPreferencesKey
